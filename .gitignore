@@ -1,4 +1,4 @@
-.DS_Store
+i.DS_Store
 
 application/cache/*
 !application/cache/index.html
@@ -29,3 +29,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
+git_key
+templates_c
