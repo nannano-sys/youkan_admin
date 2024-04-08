@@ -40,12 +40,14 @@ $(function(){
             preview_wrapper.show();
             edit_wrapper.hide()
             preview_btn.css("background", "red");
-            let text = $("#textarea").val();
-            $(".post-text").html(text.replace(/\n/g, "<br>"));
+            preview_btn.text("プレビュー中");
+            // let text = $("#textarea").val();
+            // $(".post-text").html(text.replace(/\n/g, "<br>"));
         }else{
             preview_wrapper.hide();
             edit_wrapper.show();
             preview_btn.css("background", "#F0F0F0");
+            preview_btn.text("プレビュー");
         }
     })
 });

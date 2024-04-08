@@ -1,59 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>投稿ページだよ</title>
-    <link href="/application/css/reset.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="/application/css/index.css">
-    <link rel="stylesheet" href="/application/css/hamburger.css">
-    <link rel="stylesheet" href="/application/css/post.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ブログ記事編集画面</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <script type="text/javascript" src="/application/js/post.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/application/js/hamburger.js"></script>
+    <script type="text/javascript" src="http://admin.local.youkan.jp/application/js/post.js"></script>
+    <style>
+        /* スタイルの設定 */
+        /* Header styles */
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .user-greeting {
+            font-size: 1.2rem;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .editor-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .editor-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .editor-buttons-bottom {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .editor-buttons button,
+        .editor-buttons-bottom button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .editor-buttons-bottom button {
+            margin-right: 20px;
+        }
+
+        .editor-textbox {
+            width: 100%;
+            height: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+    </style>
 </head>
-<body>
+
 <header>
-    <div class = "nav-bar">
-        <p><a href = "/">管理画面だよ</a></p>
-        <p>ようこそ○○さん！</p>
-        <p>ログアウト</p>
-    </div>
+    <div class="user-greeting">ようこそ<span class="user-name">○○</span>さん</div>
+    <button class="logout-button">ログアウト</button>
 </header>
-<button id="midashi-button">見出しボタン</button>
-<button id="oomidashi-button">大見出しボタン</button>
-<button id = "preview">プレビュー</button>
-<div class = "edit-wrapper">
-<form action method = 'POST'>
-<div class = "edit-post-main">
-    <div class = "post-title">
-        <label>ポスト名</label>
-<input type = "text" name = "post_title" {if $post} value="{$post.post_title}"{/if}>
-    </div>
-    <div class = "post-name">
-        <label>スラグ</label>
-<input type = "text" name = "post_name" {if $post}value = "{$post.post_name}"{/if}>
-    </div>
-<textarea id = "textarea" name = "post_content" placeholder = "ブログの本文を入力してね">{if $post}{$post.post_content}{/if}</textarea>
-    </div>
-    {if $edit_status == "edit_new_post"}
-    <button class = "submit" data-action = "/post/ins_post_publish">投稿</button>
-    {else if $edit_status == "edit_existing_post"}
-    <button class = "submit" data-action = "/post/update_post_publish">投稿</button>
-    {/if}
-    <button class = "submit" data-action = "/post/ins_post_draft" >下書き</button>
 
-<input type = "text" name = "post_id" {if $post}value = "{$post.id}"{/if}>
-<input type = "text" name = "draft_source_article_id" {if $post}value = "{$post.draft_source_article}"{/if}>
-</form>
-</div>
-{include file='preview.tpl'}
-
+<body>
+    <div class="editor-container">
+        <div class="editor-buttons">
+            <button id ="midashi-button">見出し</button>
+            <button>大見出し</button>
+            <button>画像挿入</button>
+            <button>プレビュー</button>
+        </div>
+        <textarea id = "textarea" class="editor-textbox" placeholder="ここに記事を書いてください"></textarea>
+        <div class="editor-buttons-bottom">
+            <button>投稿</button>
+            <button>下書き</button>
+        </div>
+    </div>
 </body>
 
-<script>
-$('.submit').on('click',function(){
-    $(this).parents('form').attr('action', $(this).data('action'));
-    $(this).parents('form').submit();
-})
-</script>
-
+</html>

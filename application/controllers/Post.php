@@ -24,6 +24,7 @@ class Post extends CI_Controller
 			$post[0] = false;
 			$edit_status = "edit_new_post";
 		}
+		// アサイン 
 		$this->smarty->assign("post", $post[0]);
 		$this->smarty->assign("edit_status", $edit_status);
 		$this->view('edit_post.tpl');
@@ -61,7 +62,7 @@ class Post extends CI_Controller
 					return htmlspecialchars($item, ENT_QUOTES, 'UTF-8');
 				}, $element);
 			}, $post);
-		}else{
+		} else {
 			$not_post = "投稿はまだありません。";
 			$this->smarty->assign("not_post", $not_post);
 		}
@@ -101,6 +102,7 @@ class Post extends CI_Controller
 			}
 			redirect('http://' . $_SERVER['HTTP_HOST'] . '/post/post_list', 'location', 301);
 		} else {
+			// トランザクション成功したらリダイレクト
 			$res = $this->post_model->insert_or_update_post_draft_post($post);
 			redirect('http://' . $_SERVER['HTTP_HOST'] . '/post/post_list', 'location', 301);
 		}
@@ -114,6 +116,7 @@ class Post extends CI_Controller
 		// $post['post_content'] = nl2br($post['post_content']);
 		$res = $this->post_model->insert_or_update_post_draft_post($post);
 		if ($res) {
+			// トランザクション成功したらリダイレクト
 			redirect('http://' . $_SERVER['HTTP_HOST'] . '/post/post_list', 'location', 301);
 		} else {
 			echo '失敗したぞ';
