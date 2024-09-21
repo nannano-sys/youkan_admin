@@ -41,8 +41,9 @@ $(function(){
             edit_wrapper.hide()
             preview_btn.css("background", "red");
             preview_btn.text("プレビュー中");
-            // let text = $("#textarea").val();
-            // $(".post-text").html(text.replace(/\n/g, "<br>"));
+            let text = $("#textarea").val();
+            console.log(text);
+            $("#post-text").html(text.replace(/\n/g, "<br>"));
         }else{
             preview_wrapper.hide();
             edit_wrapper.show();

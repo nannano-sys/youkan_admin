@@ -72,32 +72,30 @@
             <tr>
                 <th>ID</th>
                 <th>タイトル</th>
-                <th>スラグ</th>
+                <th>パーマリンク</th>
                 <th>本文</th>
                 <th>投稿日</th>
                 <th>ステータス</th>
             </tr>
         </thead>
+        {foreach $posts as $post}
         <tbody>
             <!-- 投稿一覧のレコードをここに追加 -->
             <tr>
-                <td>1</td>
-                <td>記事タイトル1</td>
-                <td>slug-1</td>
-                <td>記事本文1...</td>
-                <td>2024-04-06</td>
-                <td>公開中</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>記事タイトル2</td>
-                <td>slug-2</td>
-                <td>記事本文2...</td>
-                <td>2024-04-05</td>
-                <td>下書き</td>
+                <td>{$post.id}</td>
+                <td><a href="/post/edit_post?id={$post.id}">{$post.post_title}</a></td>
+                <td>{$post.permalink}</td>
+                <td>{$post.post_content}</td>
+                <td>{$post.create_date}</td>
+                <td>{$post.status_txt}
+                {if is_null($post.draft_source_article) == false}
+                    <p style="color: red;">※公開中の記事 ID{$post.draft_source_article} からの下書きです</p>
+                {/if}
+                </td>
             </tr>
             <!-- 他のレコードをここに追加 -->
         </tbody>
+        {/foreach}
     </table>
 </body>
 

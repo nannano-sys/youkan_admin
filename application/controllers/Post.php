@@ -10,6 +10,7 @@ class Post extends CI_Controller
 		parent::__construct();
 		$this->load->model('post_model');
 		$this->load->helper('url');
+		phpinfo();
 	}
 
 	//  投稿画面
@@ -25,7 +26,7 @@ class Post extends CI_Controller
 			$edit_status = "edit_new_post";
 		}
 		// アサイン 
-		$this->smarty->assign("post", $post[0]);
+		$this->smarty->assign("postData", $post[0]);
 		$this->smarty->assign("edit_status", $edit_status);
 		$this->view('edit_post.tpl');
 	}
@@ -41,10 +42,10 @@ class Post extends CI_Controller
 	// 投稿一覧画面
 	public function post_list()
 	{
-		$post = $this->post_model->get_post_list();
-		if ($post) {
+		$posts = $this->post_model->get_post_list();
+		if ($posts) {
 			// 文字数が多い場合、切り取りして短縮
-			foreach ($post as &$val) {
+			foreach ($posts as &$val) {
 				if (mb_strlen($val['post_content']) >= 60) {
 					$val['post_content'] = mb_substr($val['post_content'], 0, 60) . '....';
 				}
@@ -61,14 +62,15 @@ class Post extends CI_Controller
 				return array_map(function ($item) {
 					return htmlspecialchars($item, ENT_QUOTES, 'UTF-8');
 				}, $element);
-			}, $post);
+			}, $posts);
 		} else {
 			$not_post = "投稿はまだありません。";
 			$this->smarty->assign("not_post", $not_post);
 		}
-
-
-		$this->smarty->assign("post", $post);
+		// echo "<pre>";
+		// var_dump($posts);
+		// echo "</pre>";
+		$this->smarty->assign("posts", $posts);
 		$this->view('post_list.tpl');
 	}
 
@@ -77,7 +79,7 @@ class Post extends CI_Controller
 	public function ins_post_publish()
 	{
 		$post = $this->input->post();
-		$res = $this->post_model->insert_post($post['post_content'], $post['post_title'], $post['post_name']);
+		$res = $this->post_model->insert_post($post);
 		if ($res) {
 			redirect('http://' . $_SERVER['HTTP_HOST'] . '/post/post_list', 'location', 301);
 		} else {
@@ -92,7 +94,7 @@ class Post extends CI_Controller
 		$post = $this->input->post();
 		$is_draft_source = $this->post_model->get_draft_source_article_post($post['draft_source_article_id']);
 		if ($is_draft_source) {
-			$res = $this->post_model->insert_or_update_post_draft_post($post);
+			$res = $this->post_model->insert_or_update_post($post);
 			if ($res) {
 				$this->post_model->unpublish_post($post['draft_source_article_id']);
 				$this->post_model->publish_post($post['post_id']);
@@ -103,7 +105,7 @@ class Post extends CI_Controller
 			redirect('http://' . $_SERVER['HTTP_HOST'] . '/post/post_list', 'location', 301);
 		} else {
 			// トランザクション成功したらリダイレクト
-			$res = $this->post_model->insert_or_update_post_draft_post($post);
+			$res = $this->post_model->insert_or_update_post($post);
 			redirect('http://' . $_SERVER['HTTP_HOST'] . '/post/post_list', 'location', 301);
 		}
 		exit;
@@ -114,13 +116,35 @@ class Post extends CI_Controller
 	{
 		$post = $this->input->post();
 		// $post['post_content'] = nl2br($post['post_content']);
-		$res = $this->post_model->insert_or_update_post_draft_post($post);
+		$res = $this->post_model->insert_or_update_post($post);
 		if ($res) {
 			// トランザクション成功したらリダイレクト
 			redirect('http://' . $_SERVER['HTTP_HOST'] . '/post/post_list', 'location', 301);
 		} else {
 			echo '失敗したぞ';
 		}
-		exit;
+	}
+
+	// 下書きのポストをインサートもしくはアップデート
+	public function update_post_draft()
+	{
+		$post = $this->input->post();
+		// $post['post_content'] = nl2br($post['post_content']);
+		$res = $this->post_model->update_post_draft($post);
+		if ($res) {
+			// トランザクション成功したらリダイレクト
+			redirect('http://' . $_SERVER['HTTP_HOST'] . '/post/post_list', 'location', 301);
+		} else {
+			echo '失敗したぞ';
+		}
+	}
+
+	public function delete_post()
+	{
+		$post = $this->input->post();
+		$res = $this->post_model->delete_post(2, $post['post_id']);{}
+		if($res){
+			redirect('http://' . $_SERVER['HTTP_HOST'] . '/post/post_list', 'location', 301);
+		}
 	}
 }

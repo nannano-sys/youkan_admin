@@ -65,8 +65,9 @@
         <button class="logout-button">ログアウト</button>
     </header>
     <main>
-        <button class="post-button">投稿する</button>
-        <button class="post-list-button">投稿一覧を確認する</button>
+        <a href = "/post/edit_post" class="post-button">投稿する</a>
+        <a href="/post/post_list" class="post-list-button">投稿一覧を確認する</a>
+        {* <button class="post-list-button">投稿一覧を確認する</button> *}
         <!-- 他のコンテンツをここに追加 -->
     </main>
 </body>

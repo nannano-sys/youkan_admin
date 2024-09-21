@@ -88,7 +88,9 @@ class CI_Controller {
 		log_message('info', 'Controller Class Initialized');
 		$this->smarty->template_dir = APPPATH . 'views/templates';
         $this->smarty->compile_dir  = APPPATH . 'views/templates_c';
-        $this->template = 'layout.tpl';
+        // $this->template = 'post_list.tpl';
+		define("DOCUMENT_ROOT_ADMIN_URL", "http://admin.local.mofuri.jp/",true);
+		$this->smarty->assign("document_root_admin_url", DOCUMENT_ROOT_ADMIN_URL);
 	}
 
 	public function view($template)
@@ -101,7 +103,7 @@ class CI_Controller {
         if (strlen($output) > 0) {
             echo $output;
         } else {
-            $this->smarty->display($this->template); 
+            $this->smarty->display($this->template);
         }
     }
 
