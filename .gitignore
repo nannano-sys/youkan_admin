@@ -31,3 +31,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /tests/results/
 git_key
 templates_c
+/uploads/
